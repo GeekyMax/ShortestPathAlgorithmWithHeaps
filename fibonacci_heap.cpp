@@ -138,6 +138,19 @@ void fib_heap_insert_key(FibHeap *heap, Type key) {
     fib_heap_insert_node(heap, node);
 }
 
+void fib_heap_insert_key(FibHeap *heap, int index, Type key) {
+    FibNode *node;
+
+    if (heap == NULL)
+        return;
+
+    node = fib_node_make(key);
+    node->element = pair<int,Type>(index, key);
+    if (node == NULL)
+        return;
+    fib_heap_insert_node(heap, node);
+}
+
 /*
  * 将h1, h2合并成一个堆，并返回合并后的堆
  */
@@ -332,17 +345,6 @@ void fib_heap_extract_min(FibHeap *heap) {
 }
 
 /*
- * 在斐波那契堆heap中是否存在键值为key的节点；存在返回1，否则返回0。
- */
-int fib_heap_get_min(FibHeap *heap, Type *pkey) {
-    if (heap == NULL || heap->min == NULL || pkey == NULL)
-        return 0;
-
-    *pkey = heap->min->key;
-    return 1;
-}
-
-/*
  * 修改度数
  */
 static void renew_degree(FibNode *parent, int degree) {
@@ -351,209 +353,6 @@ static void renew_degree(FibNode *parent, int degree) {
         renew_degree(parent->parent, degree);
 }
 
-/*
- * 将node从父节点parent的子链接中剥离出来，
- * 并使node成为"堆的根链表"中的一员。
- */
-static void fib_heap_cut(FibHeap *heap, FibNode *node, FibNode *parent) {
-    fib_node_remove(node);
-    renew_degree(parent, node->degree);
-    // node没有兄弟
-    if (node == node->right)
-        parent->child = NULL;
-    else
-        parent->child = node->right;
-
-    node->parent = NULL;
-    node->left = node->right = node;
-    node->marked = 0;
-    // 将"node所在树"添加到"根链表"中
-    fib_node_add(node, heap->min);
-}
-
-/*
- * 对节点node进行"级联剪切"
- *
- * 级联剪切：如果减小后的结点破坏了最小堆性质，
- *     则把它切下来(即从所在双向链表中删除，并将
- *     其插入到由最小树根节点形成的双向链表中)，
- *     然后再从"被切节点的父节点"到所在树根节点递归执行级联剪枝
- */
-static void fib_heap_cascading_cut(FibHeap *heap, FibNode *node) {
-    FibNode *parent = node->parent;
-    if (parent != NULL)
-        return;
-
-    if (node->marked == 0)
-        node->marked = 1;
-    else {
-        fib_heap_cut(heap, node, parent);
-        fib_heap_cascading_cut(heap, parent);
-    }
-}
-
-/*
- * 将斐波那契堆heap中节点node的值减少为key
- */
-static void fib_heap_decrease(FibHeap *heap, FibNode *node, Type key) {
-    FibNode *parent;
-
-    if (heap == NULL || heap->min == NULL || node == NULL)
-        return;
-
-    if (key >= node->key) {
-        printf("decrease failed: the new key(%d) is no smaller than current key(%d)\n", key, node->key);
-        return;
-    }
-
-    node->key = key;
-    parent = node->parent;
-    if (parent != NULL && node->key < parent->key) {
-        // 将node从父节点parent中剥离出来，并将node添加到根链表中
-        fib_heap_cut(heap, node, parent);
-        fib_heap_cascading_cut(heap, parent);
-    }
-
-    // 更新最小节点
-    if (node->key < heap->min->key)
-        heap->min = node;
-}
-
-/*
- * 将斐波那契堆heap中节点node的值增加为key
- */
-static void fib_heap_increase(FibHeap *heap, FibNode *node, Type key) {
-    FibNode *child, *parent, *right;
-
-    if (heap == NULL || heap->min == NULL || node == NULL)
-        return;
-
-    if (key <= node->key) {
-        printf("increase failed: the new key(%d) is no greater than current key(%d)\n", key, node->key);
-        return;
-    }
-
-    // 将node每一个儿子(不包括孙子,重孙,...)都添加到"斐波那契堆的根链表"中
-    while (node->child != NULL) {
-        child = node->child;
-        fib_node_remove(child);               // 将child从node的子链表中删除
-        if (child->right == child)
-            node->child = NULL;
-        else
-            node->child = child->right;
-
-        fib_node_add(child, heap->min);       // 将child添加到根链表中
-        child->parent = NULL;
-    }
-    node->degree = 0;
-    node->key = key;
-
-    // 如果node不在根链表中，
-    //     则将node从父节点parent的子链接中剥离出来，
-    //     并使node成为"堆的根链表"中的一员，
-    //     然后进行"级联剪切"
-    // 否则，则判断是否需要更新堆的最小节点
-    parent = node->parent;
-    if (parent != NULL) {
-        fib_heap_cut(heap, node, parent);
-        fib_heap_cascading_cut(heap, parent);
-    } else if (heap->min == node) {
-        right = node->right;
-        while (right != node) {
-            if (node->key > right->key)
-                heap->min = right;
-            right = right->right;
-        }
-    }
-}
-
-/*
- * 更新二项堆heap的节点node的键值为key
- */
-void _fib_heap_update(FibHeap *heap, FibNode *node, Type key) {
-    if (key < node->key)
-        fib_heap_decrease(heap, node, key);
-    else if (key > node->key)
-        fib_heap_increase(heap, node, key);
-    else
-        printf("No need to update!!!\n");
-}
-
-void fib_heap_update(FibHeap *heap, Type oldkey, Type newkey) {
-    FibNode *node;
-
-    if (heap == NULL)
-        return;
-
-    node = fib_heap_search(heap, oldkey);
-    if (node != NULL)
-        _fib_heap_update(heap, node, newkey);
-}
-
-/*
- * 在最小堆root中查找键值为key的节点
- */
-static FibNode *fib_node_search(FibNode *root, Type key) {
-    FibNode *t = root;    // 临时节点
-    FibNode *p = NULL;    // 要查找的节点
-
-    if (root == NULL)
-        return root;
-
-    do {
-        if (t->key == key) {
-            p = t;
-            break;
-        } else {
-            if ((p = fib_node_search(t->child, key)) != NULL)
-                break;
-        }
-        t = t->right;
-    } while (t != root);
-
-    return p;
-}
-
-/*
- * 在斐波那契堆heap中查找键值为key的节点
- */
-static FibNode *fib_heap_search(FibHeap *heap, Type key) {
-    if (heap == NULL || heap->min == NULL)
-        return NULL;
-
-    return fib_node_search(heap->min, key);
-}
-
-/*
- * 在斐波那契堆heap中是否存在键值为key的节点。
- * 存在返回1，否则返回0。
- */
-int fib_heap_contains(FibHeap *heap, Type key) {
-    return fib_heap_search(heap, key) != NULL ? 1 : 0;
-}
-
-/*
- * 删除结点node
- */
-static void _fib_heap_delete(FibHeap *heap, FibNode *node) {
-    Type min = heap->min->key;
-    fib_heap_decrease(heap, node, min - 1);
-    _fib_heap_extract_min(heap);
-    free(node);
-}
-
-void fib_heap_delete(FibHeap *heap, Type key) {
-    FibNode *node;
-
-    if (heap == NULL || heap->min == NULL)
-        return;
-
-    node = fib_heap_search(heap, key);
-    if (node == NULL)
-        return;
-
-    _fib_heap_delete(heap, node);
-}
 
 /*
  * 销毁斐波那契堆
@@ -625,4 +424,8 @@ void fib_print(FibHeap *heap) {
         p = p->right;
     } while (p != heap->min);
     printf("\n");
+}
+
+Type top(FibHeap *heap) {
+    return heap->min->key;
 }
