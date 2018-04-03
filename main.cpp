@@ -1,39 +1,30 @@
-//#include "dijkstra.h"
+//#include <cstdio>
+#include "dijkstra.h"
+
+void dijkstra_test();
+
+int main() {
+    //    string path = "C:/Code/data.txt";
+    dijkstra_test();
+    return 0;
+
+}
+
+void dijkstra_test() {
+    freopen("C:/Code/data.txt", "r", stdin);
+    Graph G = create_graph();
+    int dist[MAX];
+    int prev[MAX];
+    for (int i = 0; i < MAX; i++) {
+        dist[i] = prev[i] = INFINITY;
+    }
+    dijkstra(G, 0, prev, dist);
+    for (int i = 0; i < G->vexnum; ++i) {
+        cout << i << ": prev:" << prev[i] << ", dist:" << dist[i] << endl;
+    }
+}
+
 //
-//void dijkstra_test();
-//
-//int main() {
-//    dijkstra_test();
-//    return 0;
-//
-//}
-//
-//void dijkstra_test() {
-//    priority_queue<node> Q;
-//    node node1 = node();
-//    node1.dis = 10;
-//    node1.u = 1;
-//    Q.push(node1);
-//    node node2 = node();
-//    node2.dis = 1;
-//    node2.u = 2;
-//    Q.push(node2);
-//    node node3 = node();
-//    node3.dis = 12;
-//    node3.u = 3;
-//    Q.push(node3);
-//    node node4 = node();
-//    node4.dis = 8;
-//    node4.u = 4;
-//    Q.push(node4);
-//    while (!Q.empty()) {
-//        int u = Q.top().u;
-//        int dis = Q.top().dis;
-//        Q.pop();
-//        printf("%d: %d\n", u, dis);
-//    }
-//}
-////
 //
 ///**
 // * C语言实现的斐波那契堆
@@ -299,27 +290,27 @@
 //    //test_delete();
 //}
 
-#include "FibonacciHeap.h"
-
-int main() {
-    FibonacciHeap Q = FibonacciHeap();
-    Q.push(1, 18);
-    Q.push(2, 13);
-    Q.push(3, 5);
-    Q.push(4, 15);
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    Q.push(5, 20);
-    Q.push(6, 4);
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    std::cout << Q.top().first << " " << Q.top().second << endl;
-    Q.pop();
-    return 0;
-}
+//#include "FibonacciHeap.h"
+//
+//int main() {
+//    FibonacciHeap Q = FibonacciHeap();
+//    Q.push(1, 18);
+//    Q.push(2, 13);
+//    Q.push(3, 5);
+//    Q.push(4, 15);
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    Q.push(5, 20);
+//    Q.push(6, 4);
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    std::cout << Q.top().first << " " << Q.top().second << endl;
+//    Q.pop();
+//    return 0;
+//}

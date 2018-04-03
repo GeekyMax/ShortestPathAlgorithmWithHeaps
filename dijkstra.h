@@ -9,10 +9,10 @@
 #define INFINITY 1000005
 
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 #include <queue>
 #include <vector>
-
+#include "FibonacciHeap.h"
 using namespace std;
 // 邻接矩阵
 typedef struct _graph {
@@ -20,7 +20,7 @@ typedef struct _graph {
     int vexnum;           // 顶点数
     int edgnum;           // 边数
     int matrix[MAX][MAX]; // 邻接矩阵
-} Graph, *PGraph;
+} *Graph;
 
 // 边的结构体
 typedef struct _EdgeData {
