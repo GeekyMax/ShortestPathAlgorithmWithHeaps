@@ -23,3 +23,7 @@ pair<int, Type> FibonacciHeap::top() {
 bool FibonacciHeap::empty() {
     return this->fibHeap->keyNum <= 0;
 }
+
+void FibonacciHeap::clear() {
+    this->fibHeap = fib_heap_make();
+}

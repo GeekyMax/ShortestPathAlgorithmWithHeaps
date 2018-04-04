@@ -12,8 +12,8 @@ Graph create_graph() {
             graph->matrix[i][j] = INFINITY;
         }
     }
-    cin >> graph->vexnum >> graph->edgnum;
-    for (int i = 0; i < graph->edgnum; i++) {
+    cin >> graph->vertex_num >> graph->edge_num;
+    for (int i = 0; i < graph->edge_num; i++) {
         cin >> length >> start >> end;
         graph->matrix[start][end] = min(graph->matrix[start][end], length);
         graph->matrix[end][start] = min(graph->matrix[end][start], length);
@@ -21,29 +21,29 @@ Graph create_graph() {
     return graph;
 }
 
-void dijkstra(Graph G, int vs, int prev[], int dist[]) {
+void dijkstra(Heap *heap, Graph G, int vs, int *prev, int *dist) {
+    heap->clear();
     bool flag[MAX];
-    FibonacciHeap Q = FibonacciHeap();
-    for (int i = 0; i < G->vexnum; ++i) {
+    for (int i = 0; i < G->vertex_num; ++i) {
         flag[i] = false;
         prev[i] = INFINITY;
         dist[i] = INFINITY;
     }
-    Q.push(vs, 0);
-    while (!Q.empty()) {
-        int u = Q.top().first;
-        int dis = Q.top().second;
-        Q.pop();
+    heap->push(vs, 0);
+    while (!heap->empty()) {
+        int u = heap->top().first;
+        int dis = heap->top().second;
+        heap->pop();
         if (flag[u]) {
             continue;
         }
         dist[u] = dis;
         flag[u] = true;
-        for (int i = 0; i < G->vexnum; i++) {
+        for (int i = 0; i < G->vertex_num; i++) {
             if (G->matrix[u][i] + dis < dist[i]) {
                 dist[i] = G->matrix[u][i] + dis;
                 prev[i] = u;
-                Q.push(i,dist[i]);
+                heap->push(i, dist[i]);
             }
         }
     }

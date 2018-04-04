@@ -6,19 +6,26 @@
 #define SHORTESTPATHALGORITHMWITHHEAPS_PRIORITY_HEAP_H
 
 #include "fibonacci_heap.h"
+#include "Heap.h"
+
 using namespace std;
-class FibonacciHeap {
-public:
+
+class FibonacciHeap : public Heap {
+private:
     FibHeap *fibHeap;
 public:
+
     FibonacciHeap();
 
-    void push(int index, Type key);
+    void push(int index, Type key) override;
 
-    void pop();
+    void pop() override;
 
-    pair<int, Type> top();
+    pair<int, Type> top() override;
 
-    bool empty();
+    bool empty() override;
+
+    void clear() override;
 };
+
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_PRIORITY_HEAP_H

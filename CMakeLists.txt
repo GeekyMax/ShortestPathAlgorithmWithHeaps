@@ -3,5 +3,5 @@ project(ShortestPathAlgorithmWithHeaps)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp dijkstra.cpp dijkstra.h fibonacci_heap.cpp fibonacci_heap.h FibonacciHeap.cpp FibonacciHeap.h)
+set(SOURCE_FILES main.cpp dijkstra.cpp dijkstra.h fibonacci_heap.cpp fibonacci_heap.h FibonacciHeap.cpp FibonacciHeap.h Heap.h DefaultHeap.cpp DefaultHeap.h)
 add_executable(ShortestPathAlgorithmWithHeaps ${SOURCE_FILES})
