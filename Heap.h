@@ -10,6 +10,11 @@
 using namespace std;
 typedef int Type;
 
+/**
+ * an abstract interface to find the minimum value
+ * it provides five functions: push, pop, top,empty, clear
+ * which are forced to be implements.
+ */
 class Heap {
 public:
     virtual void push(int index, Type key) = 0;

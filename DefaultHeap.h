@@ -16,7 +16,11 @@ typedef struct node {
         return a.key < key;
     }//head重载 < ，以 key 从小到大排列
 } DefaultNode;
-
+/**
+ * a default heap extends Heap implements push,pop,top,empty,clear functions.
+ * it use priority_queue in STL to implements this function.
+ * it could be pretty fast.
+ */
 class DefaultHeap : public Heap {
 private:
     priority_queue<DefaultNode> Q;

@@ -4,6 +4,11 @@
 
 #include "DefaultHeap.h"
 
+/**
+ * a default heap extends Heap implements push,pop,top,empty,clear functions
+ * it use priority_queue in STL to implements this function.
+ * it is a default constructor to init the priority_queue
+ */
 DefaultHeap::DefaultHeap() {
     Q = priority_queue<DefaultNode>();
     temp_node = DefaultNode();
