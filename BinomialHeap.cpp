@@ -6,20 +6,20 @@
 
 
 BinomialHeap::BinomialHeap() {
-    biHeap = makeBinomialHeap();
+    biHeap = binomial_heap_make();
 }
 
 void BinomialHeap::push(int index, Type key) {
-    BinomialNode *node = generateNode(index, key);
-    binomialHeapInsert(&biHeap, node);
+    BinomialNode *node = binomial_node_make(index, key);
+    binomial_heap_insert_node(&biHeap, node);
 }
 
 void BinomialHeap::pop() {
-    binomialHeapExtractMin(&biHeap);
+    binomial_heap_extract_min(&biHeap);
 }
 
 pair<int, Type> BinomialHeap::top() {
-    BinomialNode *node = binomialHeapMinimum(biHeap);
+    BinomialNode *node = binomial_heap_top(biHeap);
     return pair<int, Type>(node->index, node->key);
 }
 
@@ -29,5 +29,5 @@ bool BinomialHeap::empty() {
 
 void BinomialHeap::clear() {
     free(biHeap);
-    biHeap = makeBinomialHeap();
+    biHeap = binomial_heap_make();
 }

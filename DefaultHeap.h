@@ -6,10 +6,9 @@
 #define SHORTESTPATHALGORITHMWITHHEAPS_DEFAULTHEAP_H
 
 #include "Heap.h"
-#include <queue>
+#include "base.h"
 
 using namespace std;
-
 typedef struct node {
     int index, key;
 
@@ -35,6 +34,5 @@ public:
 
     void clear() override;
 };
-
 
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_DEFAULTHEAP_H

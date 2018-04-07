@@ -6,11 +6,8 @@
 #define SHORTESTPATHALGORITHMWITHHEAPS_DIJKSTRA_H
 
 #include "base.h"
-#include <iostream>
-#include <cstdio>
-#include <queue>
-#include <vector>
 #include "Heap.h"
+
 using namespace std;
 
 typedef struct _graph {

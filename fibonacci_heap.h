@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "base.h"
+#include <math.h>
 
 using namespace std;
 
@@ -37,28 +38,18 @@ typedef struct _FibonacciHeap {
     int maxDegree;                // 最大度
     struct _FibonacciNode *min;        // 最小节点(某个最小堆的根节点)
     struct _FibonacciNode **cons;    // 最大度的内存区域
-} FibHeap;
+} *FibHeap;
 
-// 创建Fibonacci堆
-FibHeap *fib_heap_make();
+static FibNode *fib_node_make(Type key);
 
-// 新建键值为key的节点，并将其插入到斐波那契堆中
-void fib_heap_insert_key(FibHeap *heap, Type key);
+FibHeap fib_heap_make();
 
-void fib_heap_insert_key(FibHeap *heap, int index, Type key);
+static void fib_heap_insert_node(FibHeap heap, FibNode *node);
 
-// 移除最小节点
-void fib_heap_extract_min(FibHeap *heap);
+void fib_heap_insert_key(FibHeap heap, int index, Type key);
 
-// 将h1, h2合并成一个堆，并返回合并后的堆
-FibHeap *fib_heap_union(FibHeap *h1, FibHeap *h2);
+void fib_heap_extract_min(FibHeap heap);
 
-// 销毁斐波那契堆
-void fib_heap_destroy(FibHeap *heap);
-
-// 打印"斐波那契堆"
-void fib_print(FibHeap *heap);
-
-Type top(FibHeap *heap);
+FibHeap fib_heap_union(FibHeap h1, FibHeap *h2);
 
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_FIBONACCI_HEAP_H

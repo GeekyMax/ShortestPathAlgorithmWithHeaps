@@ -9,7 +9,7 @@ Graph create_graph() {
     Graph graph = (Graph) malloc(sizeof(struct _graph));
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
-            graph->matrix[i][j] = INFINITY;
+            graph->matrix[i][j] = INF;
         }
     }
     cin >> graph->vertex_num >> graph->edge_num;
@@ -26,8 +26,8 @@ void dijkstra(Heap *heap, Graph G, int vs, int *prev, int *dist) {
     bool flag[MAX];
     for (int i = 0; i < G->vertex_num; ++i) {
         flag[i] = false;
-        prev[i] = INFINITY;
-        dist[i] = INFINITY;
+        prev[i] = INF;
+        dist[i] = INF;
     }
     heap->push(vs, 0);
     while (!heap->empty()) {

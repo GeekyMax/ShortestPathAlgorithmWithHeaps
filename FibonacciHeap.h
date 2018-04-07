@@ -12,7 +12,7 @@ using namespace std;
 
 class FibonacciHeap : public Heap {
 private:
-    FibHeap *fibHeap;
+    FibHeap fibHeap;
 public:
 
     FibonacciHeap();

@@ -1,4 +1,3 @@
-//#include <cstdio>
 #include "dijkstra.h"
 #include "DefaultHeap.h"
 #include "FibonacciHeap.h"
@@ -19,7 +18,7 @@ void dijkstra_test() {
     int dist[MAX];
     int prev[MAX];
     for (int i = 0; i < MAX; i++) {
-        dist[i] = prev[i] = INFINITY;
+        dist[i] = prev[i] = INF;
     }
     Heap *heaps[3];
     heaps[0] = new FibonacciHeap();

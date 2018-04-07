@@ -23,5 +23,4 @@ public:
     virtual void clear()=0;
 };
 
-
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_HEAP_H

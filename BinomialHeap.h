@@ -7,7 +7,8 @@
 
 #include "binomial_heap.h"
 #include "Heap.h"
-class BinomialHeap: public Heap{
+
+class BinomialHeap : public Heap {
 private:
     BiHeap biHeap;
 public:
@@ -24,6 +25,5 @@ public:
     BinomialHeap();
 
 };
-
 
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_BINOMIALHEAP_H

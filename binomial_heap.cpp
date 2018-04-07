@@ -4,9 +4,7 @@
 
 #include "binomial_heap.h"
 
-
-// generate a node valuing key
-BinomialNode *generateNode(int index, Type key) {
+BinomialNode *binomial_node_make(int index, Type key) {
     BinomialNode *x = (BinomialNode *) malloc(sizeof(BinomialNode));
     if (x == NULL) {
         printf("memory allocation of node failed");
@@ -21,8 +19,7 @@ BinomialNode *generateNode(int index, Type key) {
     return x;
 }
 
-// generate an empty binomial heap
-BiHeap makeBinomialHeap() {
+BiHeap binomial_heap_make() {
     BiHeap h = new _Binomialheap();
     if (h == NULL) {
         printf("the memory allocation of heap failed!\n");
@@ -31,10 +28,8 @@ BiHeap makeBinomialHeap() {
     h->head = NULL;
     return h;
 }
-// find the minimum key from the binomial heap
-// and return the minimum node's pointer
 
-BinomialNode *binomialHeapMinimum(BiHeap h) {
+BinomialNode *binomial_heap_top(BiHeap h) {
     BinomialNode *y = NULL;
     BinomialNode *x = h->head;
     if (x != NULL) {
@@ -52,19 +47,14 @@ BinomialNode *binomialHeapMinimum(BiHeap h) {
     return y;
 }
 
-// links the Bk-1 tree rooted at node y to the Bk-1 tree
-// rooted at node z; that is, it makes z the parent of y.
-// BinomialNode z thus becomes the root of a Bk tree
-void binomialLink(BinomialNode *y, BinomialNode *z) {
+void binomial_link(BinomialNode *y, BinomialNode *z) {
     y->p = z;
     y->sibling = z->child;
     z->child = y;
     z->degree += 1;
 }
 
-// merge the root lists of h1 and h2 into a single linked list
-// that is sorted into monotonically increasing order.
-BinomialNode *binomialMerge(BiHeap h1, BiHeap h2) {
+BinomialNode *binomial_heap_merge(BiHeap h1, BiHeap h2) {
     BinomialNode *firstNode = NULL;
     BinomialNode *p = NULL;
     BinomialNode *p1 = h1->head;
@@ -107,10 +97,9 @@ BinomialNode *binomialMerge(BiHeap h1, BiHeap h2) {
     return firstNode;
 }
 
-// unite heaps h1 and h2, returning the resulting heap.
-BiHeap binomialHeapUnion(BiHeap *h1, BiHeap *h2) {
-    BiHeap h = makeBinomialHeap();
-    h->head = binomialMerge(*h1, *h2);
+BiHeap binomial_heap_union(BiHeap *h1, BiHeap *h2) {
+    BiHeap h = binomial_heap_make();
+    h->head = binomial_heap_merge(*h1, *h2);
     free(*h1);
     *h1 = NULL;
     free(*h2);
@@ -134,7 +123,7 @@ BiHeap binomialHeapUnion(BiHeap *h1, BiHeap *h2) {
         } else if (x->key <= next->key) {
             // x->key <= next->key
             x->sibling = next->sibling;
-            binomialLink(next, x);
+            binomial_link(next, x);
         } else {
             // x->key > next->key
             if (prev == NULL) {
@@ -142,7 +131,7 @@ BiHeap binomialHeapUnion(BiHeap *h1, BiHeap *h2) {
             } else {
                 prev->sibling = next;
             }
-            binomialLink(x, next);
+            binomial_link(x, next);
         }
         // change the next
         next = x->sibling;
@@ -150,14 +139,13 @@ BiHeap binomialHeapUnion(BiHeap *h1, BiHeap *h2) {
     return h;
 }
 
-//insert node into the binomial heap
-void binomialHeapInsert(BiHeap *h, BinomialNode *x) {
-    BiHeap h1 = makeBinomialHeap();
+void binomial_heap_insert_node(BiHeap *h, BinomialNode *x) {
+    BiHeap h1 = binomial_heap_make();
     h1->head = x;
-    *h = binomialHeapUnion(h, &h1);
+    *h = binomial_heap_union(h, &h1);
 }
 
-BinomialNode *binomialHeapExtractMin(BiHeap *h) {
+BinomialNode *binomial_heap_extract_min(BiHeap *h) {
     BinomialNode *p = (*h)->head;
     BinomialNode *x = NULL;
     BinomialNode *x_prev = NULL;
@@ -194,7 +182,7 @@ BinomialNode *binomialHeapExtractMin(BiHeap *h) {
     if (child_x != NULL) {
 
         // generate a new Binomial Heap
-        BiHeap h1 = makeBinomialHeap();
+        BiHeap h1 = binomial_heap_make();
 
         // reverse the order of linked list of x's children
         // and set the children's p to NULL
@@ -210,7 +198,7 @@ BinomialNode *binomialHeapExtractMin(BiHeap *h) {
             h1->head = p_prev;
             p_prev->p = NULL;
         }
-        *h = binomialHeapUnion(h, &h1);
+        *h = binomial_heap_union(h, &h1);
     }
 
     return x;

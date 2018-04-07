@@ -5,7 +5,15 @@
 #ifndef SHORTESTPATHALGORITHMWITHHEAPS_BASE_H
 #define SHORTESTPATHALGORITHMWITHHEAPS_BASE_H
 
-#define INFINITY 10000005
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <queue>
+#include <cstdio>
+#include <vector>
+
+#define INF 10000005
 #define MAX 1005
 typedef int Type;
 
