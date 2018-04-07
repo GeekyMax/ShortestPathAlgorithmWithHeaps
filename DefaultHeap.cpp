@@ -5,8 +5,8 @@
 #include "DefaultHeap.h"
 
 DefaultHeap::DefaultHeap() {
-    Q = priority_queue<Node>();
-    temp_node = Node();
+    Q = priority_queue<DefaultNode>();
+    temp_node = DefaultNode();
 }
 
 void DefaultHeap::push(int index, Type key) {
@@ -29,5 +29,5 @@ bool DefaultHeap::empty() {
 }
 
 void DefaultHeap::clear() {
-    Q = priority_queue<Node>();
+    Q = priority_queue<DefaultNode>();
 }

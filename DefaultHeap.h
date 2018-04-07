@@ -16,12 +16,12 @@ typedef struct node {
     bool operator<(const node &a) const {
         return a.key < key;
     }//head重载 < ，以 key 从小到大排列
-} Node;
+} DefaultNode;
 
 class DefaultHeap : public Heap {
 private:
-    priority_queue<Node> Q;
-    Node temp_node;
+    priority_queue<DefaultNode> Q;
+    DefaultNode temp_node;
 public:
     DefaultHeap();
 

@@ -1,5 +1,8 @@
 //#include <cstdio>
 #include "dijkstra.h"
+#include "DefaultHeap.h"
+#include "FibonacciHeap.h"
+#include "BinomialHeap.h"
 
 void dijkstra_test();
 
@@ -18,11 +21,12 @@ void dijkstra_test() {
     for (int i = 0; i < MAX; i++) {
         dist[i] = prev[i] = INFINITY;
     }
-    Heap *heaps[2];
+    Heap *heaps[3];
     heaps[0] = new FibonacciHeap();
     heaps[1] = new DefaultHeap();
-    for (int index = 0; index < 2; index++) {
-        cout << "-----------------------"<<endl;
+    heaps[2] = new BinomialHeap();
+    for (int index = 0; index < 3; index++) {
+        cout << "-----------------------" << endl;
         cout << "heap index:" << index << endl;
         dijkstra(heaps[index], G, 0, prev, dist);
         for (int i = 0; i < G->vertex_num; ++i) {

@@ -5,13 +5,24 @@
 #ifndef SHORTESTPATHALGORITHMWITHHEAPS_FIBONACCI_HEAP_H
 #define SHORTESTPATHALGORITHMWITHHEAPS_FIBONACCI_HEAP_H
 
+
 #include <stdio.h>
 #include <iostream>
+#include "base.h"
+
 using namespace std;
-typedef int Type;
+
+#if 0
+#define LOG2(x) ({ \
+        unsigned int _i = 0; \
+        __asm__("bsr %1, %0" : "=r" (_i) : "r" ((x))); \
+        _i; })
+#else   // 注意：通过gcc编译时，要添加 -lm 选项。
+#define LOG2(x) ((log((double)(x))) / (log(2.0)))
+#endif
 
 typedef struct _FibonacciNode {
-    pair<int,Type> element;
+    pair<int, Type> element;
     Type key;                        // 关键字(键值)
     int degree;                        // 度数
     struct _FibonacciNode *left;    // 左兄弟
@@ -33,6 +44,7 @@ FibHeap *fib_heap_make();
 
 // 新建键值为key的节点，并将其插入到斐波那契堆中
 void fib_heap_insert_key(FibHeap *heap, Type key);
+
 void fib_heap_insert_key(FibHeap *heap, int index, Type key);
 
 // 移除最小节点

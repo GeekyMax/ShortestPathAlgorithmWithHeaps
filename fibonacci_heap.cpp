@@ -17,18 +17,6 @@
 #include <float.h>
 #include "fibonacci_heap.h"
 
-#if 0
-#define LOG2(x) ({ \
-        unsigned int _i = 0; \
-        __asm__("bsr %1, %0" : "=r" (_i) : "r" ((x))); \
-        _i; })
-#else   // 注意：通过gcc编译时，要添加 -lm 选项。
-#define LOG2(x) ((log((double)(x))) / (log(2.0)))
-#endif
-
-
-static FibNode *fib_heap_search(FibHeap *heap, Type key);
-
 /*
  * 将node从双链表移除
  */
@@ -95,7 +83,7 @@ static FibNode *fib_node_make(Type key) {
 
     node = (FibNode *) malloc(sizeof(FibNode));
     if (node == NULL) {
-        printf("Error: make Node failed\n");
+        printf("Error: make BinomialNode failed\n");
         return NULL;
     }
     node->key = key;
@@ -145,7 +133,7 @@ void fib_heap_insert_key(FibHeap *heap, int index, Type key) {
         return;
 
     node = fib_node_make(key);
-    node->element = pair<int,Type>(index, key);
+    node->element = pair<int, Type>(index, key);
     if (node == NULL)
         return;
     fib_heap_insert_node(heap, node);

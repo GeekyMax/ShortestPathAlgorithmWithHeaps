@@ -6,7 +6,7 @@
 
 Graph create_graph() {
     int length, start, end;
-    Graph graph = new _graph();
+    Graph graph = (Graph) malloc(sizeof(struct _graph));
     for (int i = 0; i < MAX; i++) {
         for (int j = 0; j < MAX; j++) {
             graph->matrix[i][j] = INFINITY;

@@ -5,15 +5,12 @@
 #ifndef SHORTESTPATHALGORITHMWITHHEAPS_DIJKSTRA_H
 #define SHORTESTPATHALGORITHMWITHHEAPS_DIJKSTRA_H
 
-#define MAX 10005
-#define INFINITY 1000005
-
+#include "base.h"
 #include <iostream>
 #include <cstdio>
 #include <queue>
 #include <vector>
-#include "FibonacciHeap.h"
-#include "DefaultHeap.h"
+#include "Heap.h"
 using namespace std;
 
 typedef struct _graph {
