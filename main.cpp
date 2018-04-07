@@ -5,15 +5,29 @@
 
 void dijkstra_test();
 
+void test();
+
 int main() {
-    //    string path = "C:/Code/data.txt";
     dijkstra_test();
+//    test();
     return 0;
+}
+
+void test() {
+    int a, b, dist;
+    int n, e;
+    char c;
+    freopen("C:/Project/CLion/ShortestPathAlgorithmWithHeaps/data1.txt", "r", stdin);
+    cin >> n >> e;
+    for (int i = 0; i < 100; i++) {
+        cin >> c >> a >> b >> dist;
+        cout << a << " " << b << " " << dist << endl;
+    }
 
 }
 
 void dijkstra_test() {
-    freopen("C:/Code/data.txt", "r", stdin);
+    freopen("C:/Project/CLion/ShortestPathAlgorithmWithHeaps/data1.txt", "r", stdin);
     Graph G = create_graph();
     int dist[MAX];
     int prev[MAX];
