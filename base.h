@@ -14,7 +14,7 @@
 #include <vector>
 
 #define INF 10000005
-#define MAX 200005
+#define MAX 1000005
 typedef int Type;
 
 #endif //SHORTESTPATHALGORITHMWITHHEAPS_BASE_H

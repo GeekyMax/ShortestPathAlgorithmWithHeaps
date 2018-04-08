@@ -4,11 +4,20 @@
 
 #include "fibonacci_heap.h"
 
+/**
+ * remove a fib node from the heap
+ * @param node
+ */
 static void fib_node_remove(FibNode *node) {
     node->left->right = node->right;
     node->right->left = node->left;
 }
 
+/**
+ * add a node into a heap
+ * @param node
+ * @param root
+ */
 static void fib_node_add(FibNode *node, FibNode *root) {
     node->left = root->left;
     root->left->right = node;
@@ -16,6 +25,11 @@ static void fib_node_add(FibNode *node, FibNode *root) {
     root->left = node;
 }
 
+/**
+ * link list a behind list b.
+ * @param a
+ * @param b
+ */
 static void fib_node_cat(FibNode *a, FibNode *b) {
     FibNode *tmp;
 
@@ -26,23 +40,11 @@ static void fib_node_cat(FibNode *a, FibNode *b) {
     tmp->left = b;
 }
 
-FibHeap fib_heap_make() {
-    FibHeap heap;
-
-    heap = new _FibonacciHeap();
-    if (heap == NULL) {
-        printf("Error: make FibHeap failed\n");
-        return NULL;
-    }
-
-    heap->keyNum = 0;
-    heap->maxDegree = 0;
-    heap->min = NULL;
-    heap->cons = NULL;
-
-    return heap;
-}
-
+/**
+ * make a new fibonacci node valuing key
+ * @param key
+ * @return
+ */
 static FibNode *fib_node_make(Type key) {
     FibNode *node;
 
@@ -61,6 +63,32 @@ static FibNode *fib_node_make(Type key) {
     return node;
 }
 
+/**
+ * make an empty fibonacci heap
+ * @return
+ */
+FibHeap fib_heap_make() {
+    FibHeap heap;
+
+    heap = new _FibonacciHeap();
+    if (heap == NULL) {
+        printf("Error: make FibHeap failed\n");
+        return NULL;
+    }
+
+    heap->keyNum = 0;
+    heap->maxDegree = 0;
+    heap->min = NULL;
+    heap->cons = NULL;
+
+    return heap;
+}
+
+/**
+ * insert a new node into a fibonacci heap
+ * @param heap
+ * @param node
+ */
 static void fib_heap_insert_node(FibHeap heap, FibNode *node) {
     if (heap->keyNum == 0)
         heap->min = node;
@@ -72,6 +100,12 @@ static void fib_heap_insert_node(FibHeap heap, FibNode *node) {
     heap->keyNum++;
 }
 
+/**
+ * create a new node valuing index and key, then insert it into the heap
+ * @param heap
+ * @param index
+ * @param key
+ */
 void fib_heap_insert_key(FibHeap heap, int index, Type key) {
     FibNode *node;
 
@@ -80,11 +114,15 @@ void fib_heap_insert_key(FibHeap heap, int index, Type key) {
 
     node = fib_node_make(key);
     node->element = pair<int, Type>(index, key);
-    if (node == NULL)
-        return;
     fib_heap_insert_node(heap, node);
 }
 
+/**
+ * union two fibonacci heaps.
+ * @param h1
+ * @param h2
+ * @return
+ */
 FibHeap fib_heap_union(FibHeap h1, FibHeap h2) {
     FibHeap tmp;
 
@@ -124,6 +162,11 @@ FibHeap fib_heap_union(FibHeap h1, FibHeap h2) {
     return h1;
 }
 
+/**
+ * find the min node's tree, then remove it from the heap, return it.
+ * @param heap
+ * @return
+ */
 static FibNode *fib_heap_remove_min(FibHeap heap) {
     FibNode *min = heap->min;
 
@@ -138,6 +181,15 @@ static FibNode *fib_heap_remove_min(FibHeap heap) {
     return min;
 }
 
+/**
+ * link a node to the root
+ * 把节点node链接到root：并把node从根列表中删除，
+ * 此时root会成为node的父亲，node会成为root的孩子，
+ * 同时root节点的度数（degree）会增加1.
+ * @param heap
+ * @param node
+ * @param root
+ */
 static void fib_heap_link(FibHeap heap, FibNode *node, FibNode *root) {
     // 将node从双链表中移除
     fib_node_remove(node);
@@ -151,7 +203,10 @@ static void fib_heap_link(FibHeap heap, FibNode *node, FibNode *root) {
     root->degree++;
     node->marked = 0;
 }
-
+/**
+ * alloc the space for hashing
+ * @param heap
+ */
 static void fib_heap_cons_make(FibHeap heap) {
     int old = heap->maxDegree;
 
@@ -167,7 +222,10 @@ static void fib_heap_cons_make(FibHeap heap) {
     heap->cons = (FibNode **) realloc(heap->cons,
                                       sizeof(FibHeap) * (heap->maxDegree + 1));
 }
-
+/**
+ * consolidate the heap
+ * @param heap
+ */
 static void fib_heap_consolidate(FibHeap heap) {
     int i, d, D;
     FibNode *x, *y, *tmp;
@@ -213,7 +271,11 @@ static void fib_heap_consolidate(FibHeap heap) {
         }
     }
 }
-
+/**
+ * extract the min node from the heap then return it
+ * @param heap
+ * @return the min node's pointer
+ */
 FibNode *_fib_heap_extract_min(FibHeap heap) {
     if (heap == NULL || heap->min == NULL)
         return NULL;
@@ -247,7 +309,10 @@ FibNode *_fib_heap_extract_min(FibHeap heap) {
 
     return min;
 }
-
+/**
+ *
+ * @param heap
+ */
 void fib_heap_extract_min(FibHeap heap) {
     FibNode *node;
 
@@ -258,13 +323,20 @@ void fib_heap_extract_min(FibHeap heap) {
     if (node != NULL)
         free(node);
 }
-
+/**
+ * update the node's degree
+ * @param parent
+ * @param degree
+ */
 static void renew_degree(FibNode *parent, int degree) {
     parent->degree -= degree;
     if (parent->parent != NULL)
         renew_degree(parent->parent, degree);
 }
-
+/**
+ * destroy a node
+ * @param node
+ */
 static void fib_node_destroy(FibNode *node) {
     FibNode *start = node;
 

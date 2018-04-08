@@ -41,7 +41,7 @@ void dijkstra_test() {
     for (int index = 0; index < 3; index++) {
         cout << "-----------------------" << endl;
         cout << "heap index:" << index << endl;
-        dijkstra(heaps[index], G, 0, prev, dist);
+        dijkstra(heaps[index], G, 1, prev, dist);
         for (int i = 0; i < G->vertex_num; ++i) {
             cout << i << ": prev:" << prev[i] << ", dist:" << dist[i] << endl;
         }
